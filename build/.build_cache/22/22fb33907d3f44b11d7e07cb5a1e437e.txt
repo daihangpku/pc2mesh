@@ -1,0 +1,9 @@
+{
+    errdata = "\27[01m\27[Ksrc/VCX/Labs/2-GeometryProcessing/tasks.cpp:\27[m\27[K In function ‘\27[01m\27[Kvoid VCX::Labs::GeometryProcessing::pc2mesh(VCX::Engine::SurfaceMesh&, const std::string&, const glm::vec3&, float, int)\27[m\27[K’:\
+\27[01m\27[Ksrc/VCX/Labs/2-GeometryProcessing/tasks.cpp:26:16:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kformat ‘\27[01m\27[K%d\27[m\27[K’ expects argument of type ‘\27[01m\27[Kint\27[m\27[K’, but argument 2 has type ‘\27[01m\27[Ksize_t\27[m\27[K’ {aka ‘\27[01m\27[Klong unsigned int\27[m\27[K’} [\27[01;35m\27[K-Wformat=\27[m\27[K]\
+   26 |         printf(\27[01;35m\27[K\"%d\"\27[m\27[K, \27[32m\27[Kcloud.size()\27[m\27[K);\
+      |                \27[01;35m\27[K^~~~\27[m\27[K  \27[32m\27[K~~~~~~~~~~~~\27[m\27[K\
+      |                                \27[32m\27[K|\27[m\27[K\
+      |                                \27[32m\27[Ksize_t {aka long unsigned int}\27[m\27[K\
+"
+}

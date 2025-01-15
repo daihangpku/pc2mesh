@@ -76,23 +76,38 @@ inline bool PointCloudIO::readPLY(const std::string& filename, PointCloud& cloud
         return false;
     }
 
+    std::cout << "Starting to read PLY file: " << filename << std::endl;
+
     // PLY header parsing
     std::string line;
     int vertex_count = 0;
     bool has_normal = false;
+    bool has_color = false;
     
     // Read header
     while (std::getline(file, line)) {
+        std::cout << "Header line: " << line << std::endl;  // 调试输出
+        
         if (line.find("element vertex") != std::string::npos) {
             sscanf(line.c_str(), "element vertex %d", &vertex_count);
+            std::cout << "Found vertex count: " << vertex_count << std::endl;
         }
         else if (line.find("property float nx") != std::string::npos) {
             has_normal = true;
+            std::cout << "Found normal properties" << std::endl;
+        }
+        else if (line.find("property uchar red") != std::string::npos) {
+            has_color = true;
+            std::cout << "Found color properties" << std::endl;
         }
         else if (line == "end_header") {
             break;
         }
     }
+
+    std::cout << "Vertex count: " << vertex_count << std::endl;
+    std::cout << "Has normals: " << (has_normal ? "yes" : "no") << std::endl;
+    std::cout << "Has colors: " << (has_color ? "yes" : "no") << std::endl;
 
     // Read vertex data
     cloud.points.resize(vertex_count);
@@ -110,6 +125,28 @@ inline bool PointCloudIO::readPLY(const std::string& filename, PointCloud& cloud
             file >> nx >> ny >> nz;
             cloud.normals[i] = Eigen::Vector3f(nx, ny, nz);
         }
+        
+        // 如果有颜色属性，跳过颜色数据
+        if (has_color) {
+            int r, g, b;
+            file >> r >> g >> b;
+        }
+
+        if (i < 5 || i == vertex_count-1) {  // 打印前5个点和最后一个点的数据
+            std::cout << "Point " << i << ": ("
+                     << x << ", " << y << ", " << z << ")";
+            if (has_normal) {
+                const auto& n = cloud.normals[i];
+                std::cout << " Normal: ("
+                         << n.x() << ", " << n.y() << ", " << n.z() << ")";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    std::cout << "Successfully read " << cloud.points.size() << " points" << std::endl;
+    if (has_normal) {
+        std::cout << "Successfully read " << cloud.normals.size() << " normals" << std::endl;
     }
 
     return true;

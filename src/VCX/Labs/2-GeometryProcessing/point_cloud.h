@@ -164,6 +164,7 @@ inline void PointCloud::computeNormals(int k_neighbors) {
     // 确保KD树已建立
     if (!kdtree_) {
         buildKDTree();
+        
     }
 
     normals.resize(points.size());

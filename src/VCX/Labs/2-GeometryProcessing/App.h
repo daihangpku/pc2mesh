@@ -5,11 +5,8 @@
 #include "Assets/bundled.h"
 #include "Engine/app.h"
 #include "Engine/SurfaceMesh.h"
-#include "Labs/2-GeometryProcessing/CaseMarchingCubes.h"
-#include "Labs/2-GeometryProcessing/CaseParameterization.h"
-#include "Labs/2-GeometryProcessing/CaseSimplification.h"
-#include "Labs/2-GeometryProcessing/CaseSmoothing.h"
-#include "Labs/2-GeometryProcessing/CaseSubdivision.h"
+#include "Labs/2-GeometryProcessing/Casepc2mesh.h"
+
 #include "Labs/Common/UI.h"
 
 namespace VCX::Labs::GeometryProcessing {
@@ -17,20 +14,12 @@ namespace VCX::Labs::GeometryProcessing {
     private:
         Common::UI           _ui;
         Viewer               _viewer;
-        CaseSubdivision      _caseSubdivision;
-        CaseParameterization _caseParameterization; 
-        CaseSimplification   _caseSimplification;
-        CaseSmoothing        _caseSmoothing;
-        CaseMarchingCubes    _caseMarchingCubes;
+        Casepc2mesh    _casepc2mesh;
 
         std::size_t _caseId = 0;
 
         std::vector<std::reference_wrapper<Common::ICase>> _cases = {
-            _caseSubdivision,
-            _caseParameterization,
-            _caseSimplification,
-            _caseSmoothing,
-            _caseMarchingCubes,
+            _casepc2mesh,
         };
 
     public:

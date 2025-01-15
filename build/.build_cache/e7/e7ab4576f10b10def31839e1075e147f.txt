@@ -1,0 +1,8 @@
+{
+    errdata = "In file included from \27[01m\27[Ksrc/VCX/Labs/2-GeometryProcessing/tasks.cpp:8\27[m\27[K:\
+\27[01m\27[Ksrc/VCX/Labs/2-GeometryProcessing/ball_pivot.h:\27[m\27[K In member function ‘\27[01m\27[Kbool bpa::BallPivoting::reconstruct()\27[m\27[K’:\
+\27[01m\27[Ksrc/VCX/Labs/2-GeometryProcessing/ball_pivot.h:331:1:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kcontrol reaches end of non-void function [\27[01;35m\27[K-Wreturn-type\27[m\27[K]\
+  331 | \27[01;35m\27[K}\27[m\27[K\
+      | \27[01;35m\27[K^\27[m\27[K\
+"
+}
