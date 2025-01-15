@@ -1,0 +1,22 @@
+{
+    errdata = "In file included from \27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:3\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Engine/GL/Frame.hpp:8\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Labs/0-GettingStarted/CaseResizable.h:3\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Labs/0-GettingStarted/CaseResizable.cpp:1\27[m\27[K:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:42:28:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+   42 |             return scope_t(\27[01;35m\27[K[\27[m\27[K=]() {\
+      |                            \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:42:28:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:75:28:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+   75 |             return scope_t(\27[01;35m\27[K[\27[m\27[K=]() {\
+      |                            \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:75:28:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+\27[01m\27[Ksrc/VCX/Engine/GL/Frame.hpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Frame.hpp:100:32:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+  100 |                 return scope_t(\27[01;35m\27[K[\27[m\27[K=](){\
+      |                                \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Engine/GL/Frame.hpp:100:32:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+"
+}

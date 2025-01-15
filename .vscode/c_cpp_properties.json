@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/home/daihang/.xmake/packages/e/eigen/3.4.0/c95d81810dbc45229e675130ada7d4c7/include/eigen3"
             ],
             "defines": [],
             "cStandard": "c17",

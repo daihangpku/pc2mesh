@@ -1,0 +1,26 @@
+{
+    errdata = "In file included from \27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:3\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Labs/Common/ICase.h:10\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.h:4\27[m\27[K,\
+                 from \27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:6\27[m\27[K:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:42:28:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+   42 |             return scope_t(\27[01;35m\27[K[\27[m\27[K=]() {\
+      |                            \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Engine/GL/Sampler.hpp:42:28:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:75:28:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+   75 |             return scope_t(\27[01;35m\27[K[\27[m\27[K=]() {\
+      |                            \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Engine/GL/Texture.hpp:75:28:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+\27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:\27[m\27[K In member function ‘\27[01m\27[Kvirtual void VCX::Labs::Visualization::CaseFlowVis::OnSetupPropsUI()\27[m\27[K’:\
+\27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:83:24:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kformat not a string literal and no format arguments [\27[01;35m\27[K-Wformat-security\27[m\27[K]\
+   83 |             \27[01;35m\27[KImGui::Text(t.substr(0, 7 + (static_cast<int>(ImGui::GetTime() / 0.1f) % 6)).c_str())\27[m\27[K;\
+      |             \27[01;35m\27[K~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:\27[m\27[K In lambda function:\
+\27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:92:27:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kimplicit capture of ‘\27[01m\27[Kthis\27[m\27[K’ via ‘\27[01m\27[K[=]\27[m\27[K’ is deprecated in C++20 [\27[01;35m\27[K-Wdeprecated\27[m\27[K]\
+   92 |             _task.Emplace(\27[01;35m\27[K[\27[m\27[K=]() {\
+      |                           \27[01;35m\27[K^\27[m\27[K\
+\27[01m\27[Ksrc/VCX/Labs/5-Visualization/CaseFlowVis.cpp:92:27:\27[m\27[K \27[01;36m\27[Knote: \27[m\27[Kadd explicit ‘\27[01m\27[Kthis\27[m\27[K’ or ‘\27[01m\27[K*this\27[m\27[K’ capture\
+"
+}
