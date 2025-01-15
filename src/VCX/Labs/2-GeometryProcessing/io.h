@@ -8,7 +8,7 @@
 #include <Eigen/Core>
 #include "point_cloud.h"
 
-namespace VCX::Labs{
+namespace bpa{
 namespace io {
 
 enum class FileFormat {

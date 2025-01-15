@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include "geometry/kdtree.h"
+#include "kdtree.h"
 namespace bpa {
 
 // 前向声明

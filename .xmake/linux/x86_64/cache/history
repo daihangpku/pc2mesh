@@ -3,22 +3,10 @@
         "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/explorer.lua",
         "xmake check",
         "xmake ",
-        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/config.lua",
-        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/update_intellisense.lua .vscode clangd",
+        "xmake ",
+        "xmake ",
+        "xmake run lab2",
         "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/explorer.lua",
-        "xmake check",
-        "xmake ",
-        "xmake ",
-        "xmake ",
-        "xmake ",
-        "xmake ",
-        "xmake ",
-        "xmake ",
-        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/config.lua",
-        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/update_intellisense.lua .vscode clangd",
-        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/explorer.lua",
-        "xmake check",
-        "xmake check",
-        "xmake check"
+        "xmake l /home/daihang/.vscode/extensions/tboox.xmake-vscode-2.4.0/assets/config.lua"
     }
 }
