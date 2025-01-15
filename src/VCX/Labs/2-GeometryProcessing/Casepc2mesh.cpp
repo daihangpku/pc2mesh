@@ -8,16 +8,6 @@
 
 namespace VCX::Labs::GeometryProcessing {
 
-    float Casepc2mesh::SphereSDF(const glm::vec3 & pos) {
-        return glm::length(pos) - 0.50173;
-    }
-
-    float Casepc2mesh::TorusSDF(const glm::vec3 & pos) {
-        const float a = 0.70243;
-        const float r = 0.21029;
-        float       x = sqrt(pos.x * pos.x + pos.z * pos.z);
-        return sqrt((x - a) * (x - a) + pos.y * pos.y) - r;
-    }
 
     Casepc2mesh::Casepc2mesh(Viewer & viewer):
         _viewer(viewer) {
@@ -43,7 +33,7 @@ namespace VCX::Labs::GeometryProcessing {
         ImGui::Spacing();
 
         if (ImGui::CollapsingHeader("Algorithm", ImGuiTreeNodeFlags_DefaultOpen)) {
-            _recompute |= ImGui::SliderInt("Resolution", &_resolution, 10, 100);
+            //_recompute |= ImGui::SliderInt("Resolution", &_resolution, 10, 100);
             if (_running) {
                 static const std::string t = "Running.....";
                 ImGui::Text(t.substr(0, 7 + (static_cast<int>(ImGui::GetTime() / 0.1f) % 6)).c_str());
@@ -59,10 +49,10 @@ namespace VCX::Labs::GeometryProcessing {
             _recompute = false;
             _task.Emplace([&]() {
                 Engine::SurfaceMesh emptyMesh;
-                if (_type == ImplicitGeometryType::Sphere)
-                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/cube.ply", glm::vec3 { -1, -1, -1 }, 0.18f / _resolution, _resolution);
+                if (_type == ImplicitGeometryType::square)
+                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/square.ply",  0.25);
                 else if (_type == ImplicitGeometryType::Torus)
-                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/cube.ply", glm::vec3 { -1, -1, -1 }, 1.8f / _resolution, _resolution);
+                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/cube.ply" , 0.1d);
                 return emptyMesh;
             });
             _running = true;

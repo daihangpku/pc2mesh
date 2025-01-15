@@ -11,12 +11,12 @@ namespace VCX::Labs::GeometryProcessing {
     class Casepc2mesh : public Common::ICase {
     public:
         enum class ImplicitGeometryType {
-            Sphere = 0,
+            square = 0,
             Torus
         };
 
         std::array<std::string_view, 2> _geometryTypeName {
-            "Sphere",
+            "square",
             "Torus"
         };
 
@@ -28,15 +28,13 @@ namespace VCX::Labs::GeometryProcessing {
         virtual Common::CaseRenderResult OnRender(std::pair<std::uint32_t, std::uint32_t> const desiredSize) override;
         virtual void                     OnProcessInput(ImVec2 const & pos) override;
 
-        static float SphereSDF(const glm::vec3 & pos);
-        static float TorusSDF(const glm::vec3 & pos);
 
     private:
         Engine::Async<Engine::SurfaceMesh> _task;
         Viewer &                           _viewer;
         Engine::Camera                     _camera        { .Eye = glm::vec3(-1, 1, 1), };
         Common::OrbitCameraManager         _cameraManager { glm::vec3(-1, 1, 1) };
-        ImplicitGeometryType               _type          { ImplicitGeometryType::Sphere };
+        ImplicitGeometryType               _type          { ImplicitGeometryType::square };
         bool                               _recompute     { true };
         bool                               _running       { false };
         ModelObject                        _modelObject;

@@ -5,11 +5,15 @@
 #include <list>
 #include <queue>
 #include <Eigen/Core>
+#include <cmath>
 #include <Eigen/Dense>
 #include "Labs/2-GeometryProcessing/mesh.h"
 #include "Labs/2-GeometryProcessing/kdtree.h"
 #include "Labs/2-GeometryProcessing/io.h"
-
+#include <utility>
+std::pair<int,int> pr(int a,int b){
+    return std::make_pair(std::min(a,b),std::max(a,b));
+}
 namespace bpa {
 
 class BallPivoting {
@@ -59,6 +63,7 @@ private:
     float min_triangle_quality_; // 最小三角形质量阈值
 
 public:
+    std::map<std::pair<int,int>, int> edge_usage_count;
     BallPivoting(const PointCloud& cloud, float radius)
         : cloud_(cloud), radius_(radius) {
         if (!cloud.hasNormals()) {
@@ -138,7 +143,8 @@ private:
         std::vector<size_t> best_seed;
         
         // 采样点寻找最佳种子三角形
-        for (size_t i = 0; i < cloud_.size(); i += cloud_.size()/100) {
+        for (size_t i = 0; i < cloud_.size(); i += std::max((int)cloud_.size()/100,1)) {
+            std::cout<<i<<" ";
             if (used_vertices_.find(i) != used_vertices_.end())
                 continue;
 
@@ -147,6 +153,7 @@ private:
             
             // 寻找邻域点
             std::vector<size_t> neighbors = cloud_.findNeighbors(p1, radius_ * 2.0f);
+            std::cout<<neighbors.size()<<std::endl;
             if (neighbors.size() < 2) continue;
             
             // 在邻域中寻找最佳三角形
@@ -205,46 +212,60 @@ private:
     }
 
     bool pivotBall(const Edge& edge, size_t& next_vertex) {
-        const auto& p1 = cloud_.getPoint(edge.v1);
-        const auto& p2 = cloud_.getPoint(edge.v2);
-        Eigen::Vector3f midpoint = (p1 + p2) * 0.5f;
-        
-        // 搜索候选点
-        std::vector<size_t> neighbors = cloud_.findNeighbors(midpoint, radius_ * 3.0f);
-        
-        float best_quality = -1.0f;
-        bool found = false;
-        
-        Eigen::Vector3f edge_dir = (p2 - p1).normalized();
-        Eigen::Vector3f edge_normal = (cloud_.getNormal(edge.v1) + 
-                                     cloud_.getNormal(edge.v2)).normalized();
-        
+    const auto& p1 = cloud_.getPoint(edge.v1);
+    const auto& p2 = cloud_.getPoint(edge.v2);
+    Eigen::Vector3f midpoint = (p1 + p2) * 0.5f;
+
+    // 初始化候选点集合
+    std::vector<size_t> neighbors = cloud_.findNeighbors(midpoint, radius_);
+    float best_quality = -1.0f;
+    bool found = false;
+
+    for (size_t candidate : neighbors) {
+        if (candidate == edge.v1 || candidate == edge.v2)
+            continue;
+
+        // 检查边的使用次数
+        Edge e1(edge.v1, candidate);
+        Edge e2(edge.v2, candidate);
+        Edge e3(edge.v1, edge.v2);
+
+        if (edge_usage_count[pr(edge.v1, candidate)] >= 2 || edge_usage_count[pr(edge.v2, candidate)] >= 2 || edge_usage_count[pr(edge.v1, edge.v2)] >= 2)
+            continue;
+
+        if (!isValidTriangle(edge.v1, edge.v2, candidate))
+            continue;
+
+        // 计算三角形质量
+        float quality = computeTriangleQuality(edge.v1, edge.v2, candidate);
+        if (quality > best_quality) {
+            best_quality = quality;
+            next_vertex = candidate;
+            found = true;
+        }
+    }
+
+    // 动态调整球半径进行扩展
+    if (!found) {
+        float adjusted_radius = radius_ * 1.2f;  // 放大搜索范围
+        neighbors = cloud_.findNeighbors(midpoint, adjusted_radius);
+
         for (size_t candidate : neighbors) {
-            if (candidate == edge.v1 || candidate == edge.v2 ||
-                used_vertices_.find(candidate) != used_vertices_.end())
+            if (candidate == edge.v1 || candidate == edge.v2)
                 continue;
-            
+
+            // 检查边的使用次数
+            Edge e1(edge.v1, candidate);
+            Edge e2(edge.v2, candidate);
+            Edge e3(edge.v1, edge.v2);
+
+            if (edge_usage_count[pr(edge.v1, candidate)] >= 2 || edge_usage_count[pr(edge.v2, candidate)] >= 2 || edge_usage_count[pr(edge.v1, edge.v2)] >= 2)
+            continue;
+
+
             if (!isValidTriangle(edge.v1, edge.v2, candidate))
                 continue;
-            
-            const auto& p3 = cloud_.getPoint(candidate);
-            Eigen::Vector3f center = computeBallCenter(p1, p2, p3);
-            
-            // 检查球面上是否有其他点
-            bool is_empty = true;
-            for (size_t idx : neighbors) {
-                if (idx == edge.v1 || idx == edge.v2 || idx == candidate)
-                    continue;
-                    
-                if ((cloud_.getPoint(idx) - center).norm() < radius_ * 0.99f) {
-                    is_empty = false;
-                    break;
-                }
-            }
-            
-            if (!is_empty) continue;
-            
-            // 计算三角形质量
+
             float quality = computeTriangleQuality(edge.v1, edge.v2, candidate);
             if (quality > best_quality) {
                 best_quality = quality;
@@ -252,9 +273,71 @@ private:
                 found = true;
             }
         }
-        
-        return found && best_quality >= min_triangle_quality_;
     }
+
+    return found && best_quality >= min_triangle_quality_;
+}
+
+std::set<Edge> boundary_edges_;
+
+void detectBoundaryEdges() {
+    boundary_edges_.clear();
+    std::map<Edge, int> edge_count;
+
+    for (const auto& tri : triangles_) {
+        edge_count[Edge(tri.v1, tri.v2)]++;
+        edge_count[Edge(tri.v2, tri.v3)]++;
+        edge_count[Edge(tri.v3, tri.v1)]++;
+    }
+
+    for (const auto& [edge, count] : edge_count) {
+        if (count == 1) {
+            boundary_edges_.insert(edge);
+        }
+    }
+}
+
+void fillHoles() {
+    detectBoundaryEdges();
+
+    while (!boundary_edges_.empty()) {
+        Edge edge = *boundary_edges_.begin();
+        boundary_edges_.erase(boundary_edges_.begin());
+
+        size_t best_candidate = SIZE_MAX;
+        float best_quality = -1.0f;
+
+        // 尝试修补当前边界
+        const auto& p1 = cloud_.getPoint(edge.v1);
+        const auto& p2 = cloud_.getPoint(edge.v2);
+        Eigen::Vector3f edge_normal = (cloud_.getNormal(edge.v1) + cloud_.getNormal(edge.v2)).normalized();
+
+        auto neighbors = cloud_.findNeighbors((p1 + p2) * 0.5f, radius_ * 2.0f);
+        for (size_t candidate : neighbors) {
+            if (candidate == edge.v1 || candidate == edge.v2 || used_vertices_.count(candidate))
+                continue;
+
+            if (!isValidTriangle(edge.v1, edge.v2, candidate))
+                continue;
+
+            float quality = computeTriangleQuality(edge.v1, edge.v2, candidate);
+            if (quality > best_quality) {
+                best_quality = quality;
+                best_candidate = candidate;
+            }
+        }
+
+        if (best_candidate != SIZE_MAX) {
+            // 修补成功，添加三角形
+            triangles_.emplace_back(edge.v1, edge.v2, best_candidate);
+            boundary_edges_.erase(Edge(edge.v1, best_candidate));
+            boundary_edges_.erase(Edge(edge.v2, best_candidate));
+            boundary_edges_.insert(Edge(edge.v1, best_candidate));
+            boundary_edges_.insert(Edge(edge.v2, best_candidate));
+        }
+    }
+}
+
 };
 
 inline bool BallPivoting::reconstruct() {
@@ -286,48 +369,59 @@ inline bool BallPivoting::reconstruct() {
     active_edges_.insert(Edge(seed_vertices[0], seed_vertices[1], quality));
     active_edges_.insert(Edge(seed_vertices[1], seed_vertices[2], quality));
     active_edges_.insert(Edge(seed_vertices[2], seed_vertices[0], quality));
-
+    edge_usage_count[pr(seed_vertices[0], seed_vertices[1])]++;
+    edge_usage_count[pr(seed_vertices[2], seed_vertices[1])]++;
+    edge_usage_count[pr(seed_vertices[0], seed_vertices[2])]++;
     size_t iteration = 0;
     size_t max_iterations = cloud_.size() * 10;  // 防止无限循环
 
     while (!active_edges_.empty() && iteration++ < max_iterations) {
-        // 取出当前最高质量的边
-        Edge current_edge = *active_edges_.begin();
-        active_edges_.erase(active_edges_.begin());
+    // 取出当前最高质量的边
+    //std::cout<<iteration<<std::endl;
+    Edge current_edge = *active_edges_.begin();
+    active_edges_.erase(active_edges_.begin());
 
-        size_t next_vertex;
-        if (pivotBall(current_edge, next_vertex)) {
-            float quality = computeTriangleQuality(
-                current_edge.v1, current_edge.v2, next_vertex);
-                
-            // 添加新三角形
-            triangles_.emplace_back(
-                current_edge.v1, current_edge.v2, next_vertex, quality);
-            used_vertices_.insert(next_vertex);
+    size_t next_vertex;
+    
+    if (pivotBall(current_edge, next_vertex)) {
+        
+        float quality = computeTriangleQuality(
+            current_edge.v1, current_edge.v2, next_vertex);
 
-            // 处理新边
-            Edge e1(current_edge.v1, next_vertex, quality);
-            Edge e2(current_edge.v2, next_vertex, quality);
+        // 添加新三角形
+        triangles_.emplace_back(
+            current_edge.v1, current_edge.v2, next_vertex, quality);
 
-            if (active_edges_.find(e1) != active_edges_.end())
-                active_edges_.erase(e1);
-            else
-                active_edges_.insert(e1);
-
-            if (active_edges_.find(e2) != active_edges_.end())
-                active_edges_.erase(e2);
-            else
-                active_edges_.insert(e2);
+        // 插入新边（检查是否超过两次使用）
+        Edge e1(current_edge.v1, next_vertex, quality);
+        Edge e2(current_edge.v2, next_vertex, quality);
+        Edge e3(current_edge.v2, current_edge.v1, quality);
+        // 更新边使用计数并插入活动边
+        
+        if (++edge_usage_count[pr(current_edge.v1, next_vertex)] < 2) {
+            active_edges_.insert(e1);
+        }
+        if (++edge_usage_count[pr(current_edge.v2, next_vertex)] < 2) {
+            active_edges_.insert(e2);
+        }
+        if (++edge_usage_count[pr(current_edge.v1, current_edge.v2)] < 2) {
+            active_edges_.insert(e3);
         }
         
-        if (iteration % 1000 == 0) {
-            std::cout << "Iteration " << iteration << ": "
-                     << triangles_.size() << " triangles, "
-                     << active_edges_.size() << " active edges" << std::endl;
-        }
+        
     }
 
-    std::cout << "Reconstruction completed:" << std::endl;
+    if (iteration % 1000 == 0) {
+        std::cout << "Iteration " << iteration << ": "
+                  << triangles_.size() << " triangles, "
+                  << active_edges_.size() << " active edges" << std::endl;
+    }
+}
+
+    
+    std::cout << "Detecting and repairing boundary edges..." << std::endl;
+    //fillHoles();
+    std::cout << "Reconstruction completed with " << triangles_.size() << " triangles.\n";
     return 1;
 }
 

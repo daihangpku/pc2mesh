@@ -11,14 +11,14 @@ def generate_ply_file(filename, n_points=100):
     points = np.zeros((n_points * n_points, 3))
     points[:, 0] = X.flatten()
     points[:, 1] = Y.flatten()
-    points[:, 2] = np.random.normal(0, 0.00, n_points * n_points)  # Small z variation
+    points[:, 2] = np.random.normal(0, 0.01, n_points * n_points)  # Small z variation
     
     # Create normals (mostly pointing up with small variations)
     normals = np.zeros((n_points * n_points, 3))
     normals[:, 2] = 1.0  # Point up in Z direction
     # Add small random variations to X and Y components
-    normals[:, 0] = np.random.normal(0, 0.0, n_points * n_points)
-    normals[:, 1] = np.random.normal(0, 0.0, n_points * n_points)
+    normals[:, 0] = np.random.normal(0, 0.01, n_points * n_points)
+    normals[:, 1] = np.random.normal(0, 0.01, n_points * n_points)
     # Normalize
     norms = np.linalg.norm(normals, axis=1)
     normals = normals / norms[:, np.newaxis]
@@ -66,6 +66,6 @@ def generate_ply_file(filename, n_points=100):
 
 # Generate the point cloud
 current_dir = os.getcwd()
-output_path = os.path.join(current_dir, "cube.ply")
+output_path = os.path.join(current_dir, "square.ply")
 print(f"Generating PLY file at: {output_path}")
-generate_ply_file(output_path, n_points=20)
+generate_ply_file(output_path, n_points=15)

@@ -569,8 +569,6 @@ namespace VCX::Labs::GeometryProcessing {
     
     void pc2mesh(Engine::SurfaceMesh& output, 
                    const std::string& data_path, 
-                   const glm::vec3& grid_min, 
-                   const float dx, 
-                   const int n);
+                   const double r);
 
 }

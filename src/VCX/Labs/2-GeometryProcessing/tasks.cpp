@@ -16,9 +16,7 @@ namespace VCX::Labs::GeometryProcessing {
     // 实现pc2mesh函数
     void pc2mesh(Engine::SurfaceMesh& output, 
                     const std::string& data_path, 
-                    const glm::vec3& grid_min, 
-                    const float dx, 
-                    const int n) {
+                    const double r) {
         // 1. 读取点云数据
         bpa::PointCloud cloud;
         bpa::io::PointCloudIO::readPointCloud(data_path, cloud);
@@ -29,7 +27,7 @@ namespace VCX::Labs::GeometryProcessing {
         // cloud.removeOutliers(10, 2.0f); // 移除离群点
         
         // 3. 确定合适的球半径
-        float radius = 0.008*n; // 根据网格大小调整球半径
+        float radius = r; // 根据网格大小调整球半径
         
         // 4. 执行Ball Pivoting算法
         bpa::BallPivoting bpa(cloud, radius);
