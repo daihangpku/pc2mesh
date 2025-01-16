@@ -144,7 +144,7 @@ private:
         
         // 采样点寻找最佳种子三角形
         for (size_t i = 0; i < cloud_.size(); i += std::max((int)cloud_.size()/100,1)) {
-            std::cout<<i<<" ";
+            //std::cout<<i<<" ";
             if (used_vertices_.find(i) != used_vertices_.end())
                 continue;
 
@@ -153,7 +153,7 @@ private:
             
             // 寻找邻域点
             std::vector<size_t> neighbors = cloud_.findNeighbors(p1, radius_ * 2.0f);
-            std::cout<<neighbors.size()<<std::endl;
+            //std::cout<<neighbors.size()<<std::endl;
             if (neighbors.size() < 2) continue;
             
             // 在邻域中寻找最佳三角形
@@ -220,7 +220,7 @@ private:
     std::vector<size_t> neighbors = cloud_.findNeighbors(midpoint, radius_);
     float best_quality = -1.0f;
     bool found = false;
-
+    std::cout<<neighbors.size()<<std::endl;
     for (size_t candidate : neighbors) {
         if (candidate == edge.v1 || candidate == edge.v2)
             continue;

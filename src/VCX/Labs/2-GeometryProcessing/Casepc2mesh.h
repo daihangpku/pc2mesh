@@ -17,7 +17,7 @@ namespace VCX::Labs::GeometryProcessing {
 
         std::array<std::string_view, 2> _geometryTypeName {
             "square",
-            "Torus"
+            "cylinder"
         };
 
         Casepc2mesh(Viewer & viewer);
@@ -39,6 +39,6 @@ namespace VCX::Labs::GeometryProcessing {
         bool                               _running       { false };
         ModelObject                        _modelObject;
         RenderOptions                      _options;
-        int                                _resolution    { 10 };
+        int                               _resolution    { 1 };
     };
 } // namespace VCX::Labs::GeometryProcessing

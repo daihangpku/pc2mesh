@@ -33,7 +33,7 @@ namespace VCX::Labs::GeometryProcessing {
         ImGui::Spacing();
 
         if (ImGui::CollapsingHeader("Algorithm", ImGuiTreeNodeFlags_DefaultOpen)) {
-            //_recompute |= ImGui::SliderInt("Resolution", &_resolution, 10, 100);
+            _recompute |= ImGui::SliderInt("Resolution", &_resolution, -10, 100);
             if (_running) {
                 static const std::string t = "Running.....";
                 ImGui::Text(t.substr(0, 7 + (static_cast<int>(ImGui::GetTime() / 0.1f) % 6)).c_str());
@@ -50,9 +50,9 @@ namespace VCX::Labs::GeometryProcessing {
             _task.Emplace([&]() {
                 Engine::SurfaceMesh emptyMesh;
                 if (_type == ImplicitGeometryType::square)
-                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/square.ply",  0.25);
+                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/square.ply",  0.25*(1+_resolution/100.0));
                 else if (_type == ImplicitGeometryType::Torus)
-                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/cube.ply" , 0.1d);
+                    pc2mesh(emptyMesh, "/home/daihang/pc2mesh/cylinder.ply" , 0.09*(1+_resolution/100.0));
                 return emptyMesh;
             });
             _running = true;
